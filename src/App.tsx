@@ -1,25 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useReducer } from 'react';
+import { StateContext, DispatchContext } from './tools'
+
+// import { Switch, Route, Redirect } from 'react-router-dom'
+import DashBoard from "./Components/DashBoard";
+// import Login from './Pages/Login'
+// import Info from './Pages/Info'
+
 import './App.css';
+// const routes = [
+//   {
+//     path: '/login',
+//     name: 'login',
+//     component: Login
+//   },
+//   {
+//     path: '/info',
+//     name: 'info',
+//     component: Info
+//   }
+// ]
+
+function reduer(state: any = { token: localStorage.getItem('token') }, action: any = { type: '' }) {
+  if (action.type === 'login') {
+    return { ...state, token: '1234' }
+  }
+  if (action.type === 'logout') {
+    return { ...state, token: '' }
+  }
+  return state
+}
+
 
 function App() {
+  const [state, dispatch] = useReducer(reduer, { token: localStorage.getItem("token") ? "1234" : "", })
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // @ts-ignore
+    <DispatchContext.Provider value={dispatch}>
+      <StateContext.Provider
+        // @ts-ignore
+        value={{ ...state }}>
+        <DashBoard />
+        {/* <Switch>
+          {routes.map((route: any, index: number) => (
+            <Route key={index} path={route.path} component={route.component}></Route>
+          ))}
+          <Redirect from="/" to={state ? "/info" : '/login'}></Redirect>
+        </Switch> */}
+      </StateContext.Provider>
+    </DispatchContext.Provider>
   );
 }
 
