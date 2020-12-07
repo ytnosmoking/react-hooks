@@ -32,6 +32,7 @@ function reduer(state: any = { token: localStorage.getItem('token') }, action: a
 
 
 function App() {
+  // 不用 redux mobx 版本  用钩子函数 reducer 处理
   const [state, dispatch] = useReducer(reduer, { token: localStorage.getItem("token") ? "1234" : "", })
   return (
     // @ts-ignore
